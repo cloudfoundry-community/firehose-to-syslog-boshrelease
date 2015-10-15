@@ -1,0 +1,16 @@
+---
+packages:
+- name: firehose-to-syslog
+  version: c5bec551f1100a1712dbc28c383923917b47c32d
+  sha1: 88fe036915401e532162f071ef429cbd5e60340e
+  fingerprint: c5bec551f1100a1712dbc28c383923917b47c32d
+  dependencies: []
+jobs:
+- name: firehose-to-syslog
+  version: 2c90cf3dccacaae2a9d1bbcf2c69fe52bf9d8aab
+  fingerprint: 2c90cf3dccacaae2a9d1bbcf2c69fe52bf9d8aab
+  sha1: 107f74559c1614e4f4feedc1ef9f4f0f84223fec
+commit_hash: afffa242
+uncommitted_changes: true
+name: firehose-to-syslog
+version: '1'
