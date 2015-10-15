@@ -1,1 +1,5 @@
---- {}
+---
+firehose-to-syslog/firehose-to-syslog-linux64:
+  object_id: 29476ba5-1833-498a-9f54-d07d1dc8c792
+  sha: d259838cbdc627c1447eac63c240cef68c7aabcb
+  size: 10188928

@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Setup env vars and folders for the webapp_ctl script
+source /var/vcap/jobs/firehose-to-syslog/helpers/ctl_setup.sh 'firehose-to-syslog'
+
+export PORT=${PORT:-5000}
+export LANG=en_US.UTF-8
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE $JOB_NAME
+
+    # store pid in $PIDFILE
+    echo $$ > $PIDFILE
+
+    export API_ENDPOINT=<%= p("firehose_to_syslog.api_endpoint") %>
+    <% if p("firehose_to_syslog.doppler_endpoint") != "" %> export DOPPLER_ENDPOINT=<%= p("firehose_to_syslog.doppler_endpoint") %> <% end%>
+    export SYSLOG_ENDPOINT=<%= p("firehose_to_syslog.syslog_server") %>
+    export FIREHOSE_SUBSCRIPTION_ID=<%= p("firehose_to_syslog.subscription_id") %>
+    export FIREHOSE_USER=<%= p("firehose_to_syslog.user") %>
+    export FIREHOSE_PASSWORD=<%= p("firehose_to_syslog.password") %>
+    <% if p("firehose_to_syslog.skip-ssl-validation") %> export DEBUG=true <% end%>
+    <% if p("firehose_to_syslog.log_event_totals") %>
+      export LOG_EVENT_TOTALS=true
+      export LOG_EVENT_TOTALS_TIME=<%= p("firehose_to_syslog.log_event_totals_time") %>
+    <% end%>
+    export EVENTS=<%= p("firehose_to_syslog.events") %>
+    export BOLTDB_PATH=/tmp/firehose-to-syslog.cache.db
+    export CF_PULL_TIME=<%= p("firehose_to_syslog.cc_pull_time") %>
+    export EXTRA_FIELDS=<%= p("firehose_to_syslog.extra_fields") %>
+    <% if p("firehose_to_syslog.debug") %> export DEBUG=true <% end%>
+
+    exec chpst -u vcap:vcap /var/vcap/jobs/firehose-to-syslog/packages/firehose-to-syslog/firehose-to-syslog-linux64 \
+         >>$LOG_DIR/$JOB_NAME.stdout.log \
+         2>>$LOG_DIR/$JOB_NAME.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+  *)
+    echo "Usage: firehose-to-syslog_ctl {start|stop}"
+
+    ;;
+
+esac
+exit 0

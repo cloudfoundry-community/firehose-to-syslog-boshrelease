@@ -1,13 +1,53 @@
 ---
 name: firehose-to-syslog
-packages: []
+
+packages:
+- firehose-to-syslog
+
 templates:
+  bin/firehose-to-syslog_ctl: bin/firehose-to-syslog_ctl
   bin/monit_debugger: bin/monit_debugger
-  bin/firehose_to_syslog_ctl: bin/firehose_to_syslog_ctl
-  config/firehose_to_syslog.conf.erb: config/firehose_to_syslog.conf
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
+
 properties:
-  firehose_to_syslog.leader_address:
-    description: Hostname/IP to the leader/master of the cluster
+  firehose_to_syslog.api_endpoint:
+    description: "Api endpoint address"
+    default: https://api.10.244.0.34.xip.io
+  firehose_to_syslog.doppler_endpoint:
+    description: "Overwrite default doppler endpoint return by /v2/info"
+    default: ""
+  firehose_to_syslog.syslog_server:
+    description: "Syslog server. host:port"
+    default: "changeMe:port"
+  firehose_to_syslog.debug:
+    description: "Enable debug mode. This disables forwarding to syslog"
+    default: false 
+  firehose_to_syslog.subscription_id:
+    description: "Id for the subscription"
+    default: "firehose-to-syslog"
+  firehose_to_syslog.user:
+    description: "User. Needs to be able to consume from both cf api(as admin) and the firehose"
+    default: "admin"
+  firehose_to_syslog.password:
+    description: "Password for firehose_to_syslog.user"
+    default: "admin"
+  firehose_to_syslog.skip-ssl-validation:
+    description: "Please don't"
+    default: false
+  firehose_to_syslog.log_event_totals:
+    description: "Logs the counters for all selected events since nozzle was last started."
+    default: true
+  firehose_to_syslog.log_event_totals_time:
+    description: "How frequently the event totals are calculated"
+    default: "30s"
+  firehose_to_syslog.events:
+    description: "Comma separated list of events you would like. Valid options are LogMessage, ValueMetric, CounterEvent, Error, ContainerMetric, HttpStart, HttpStop, HttpStartStop"
+    default: "LogMessage"
+  firehose_to_syslog.cc_pull_time:
+    description: "CloudController Polling time in sec."
+    default: "60s"
+  firehose_to_syslog.extra_fields:
+    description: "Extra fields you want to annotate your events with, example: '--extra-fields=env:dev,something:other"
+    default: ""

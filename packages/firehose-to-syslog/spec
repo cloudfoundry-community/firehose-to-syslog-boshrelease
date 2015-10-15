@@ -1,0 +1,5 @@
+---
+name: firehose-to-syslog
+dependencies: []
+files:
+- firehose-to-syslog/firehose-to-syslog-linux64
