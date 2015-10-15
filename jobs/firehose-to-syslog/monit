@@ -1,0 +1,5 @@
+check process firehose_to_syslog
+  with pidfile /var/vcap/sys/run/firehose_to_syslog/firehose_to_syslog.pid
+  start program "/var/vcap/jobs/firehose_to_syslog/bin/monit_debugger firehose_to_syslog_ctl '/var/vcap/jobs/firehose_to_syslog/bin/firehose_to_syslog_ctl start'"
+  stop program "/var/vcap/jobs/firehose_to_syslog/bin/monit_debugger firehose_to_syslog_ctl '/var/vcap/jobs/firehose_to_syslog/bin/firehose_to_syslog_ctl stop'"
+  group vcap

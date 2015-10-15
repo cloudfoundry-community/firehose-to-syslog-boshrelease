@@ -1,0 +1,13 @@
+---
+name: firehose-to-syslog
+packages: []
+templates:
+  bin/monit_debugger: bin/monit_debugger
+  bin/firehose_to_syslog_ctl: bin/firehose_to_syslog_ctl
+  config/firehose_to_syslog.conf.erb: config/firehose_to_syslog.conf
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+properties:
+  firehose_to_syslog.leader_address:
+    description: Hostname/IP to the leader/master of the cluster
